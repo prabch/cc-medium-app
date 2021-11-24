@@ -1,5 +1,6 @@
 require('./bootstrap');
 
+import 'materialize-css/dist/css/materialize.min.css'
 import {createApp} from 'vue'
 
 require('./bootstrap')

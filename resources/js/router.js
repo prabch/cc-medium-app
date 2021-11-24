@@ -6,7 +6,7 @@ import login from './pages/Login.vue';
 import posts from './pages/Posts.vue';
 
 import publish from './components/Publish.vue';
-import profile from './components/Profile.vue';
+import profile from './pages/Profile.vue';
 
 export const routes = [
     {
