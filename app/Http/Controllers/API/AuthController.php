@@ -4,87 +4,78 @@ namespace App\Http\Controllers\API;
 
 use Session;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
-    /**
-     * Register
-     */
-    public function register(Request $request)
+
+    public function register(RegisterRequest $request)
     {
         try {
             $user = new User();
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
+            $user->name = $request->validated()['name'];
+            $user->email = $request->validated()['email'];
+            $user->password = Hash::make($request->validated()['password']);
             $user->save();
 
             $success = true;
-            $message = 'User register successfully';
+            $message = 'Registration successful';
+            $errors = [];
+
         } catch (\Illuminate\Database\QueryException $ex) {
             $success = false;
-            $message = $ex->getMessage();
+            $message = 'Error occured';
+            $errors[] = $ex->getMessage();
         }
 
-        // response
-        $response = [
+        return [
             'success' => $success,
             'message' => $message,
+            'errors' => $errors
         ];
-        return response()->json($response);
     }
 
-    /**
-     * Login
-     */
-    public function login(Request $request)
+
+    public function login(LoginRequest $request)
     {
         $credentials = [
-            'email' => $request->email,
-            'password' => $request->password,
+            'email' => $request->validated()['email'],
+            'password' => $request->validated()['password'],
         ];
 
         if (Auth::attempt($credentials)) {
             $profile = User::with('token')->find(Auth::id());
-            if ($token = $profile['token']['token']) session(['token' => $token, 'medium_user_id' => $profile['token']['medium_user_id']]);
+            if (isset($profile['token']['token'])) {
+                $token = $profile['token']['token'];
+                session(['token' => $token, 'medium_user_id' => $profile['token']['medium_user_id']]);
+            }
             $success = true;
-            $message = 'User login successfully';
+            $message = 'Logging you in...';
+            $errors = [];
         } else {
             $success = false;
             $message = 'Unauthorised';
+            $errors = ['auth' => 'Invalid login details'];
         }
 
-        // response
-        $response = [
+        return [
             'success' => $success,
             'message' => $message,
+            'errors' => $errors
         ];
-        return response()->json($response);
     }
 
-    /**
-     * Logout
-     */
     public function logout()
     {
-        try {
-            Session::flush();
-            $success = true;
-            $message = 'Successfully logged out';
-        } catch (\Illuminate\Database\QueryException $ex) {
-            $success = false;
-            $message = $ex->getMessage();
-        }
-
-        // response
-        $response = [
-            'success' => $success,
-            'message' => $message,
+        Session::flush();
+        return [
+            'success' => true,
+            'message' => 'Logged out',
+            'errors' => []
         ];
-        return response()->json($response);
     }
 }

@@ -1,12 +1,15 @@
 import {createWebHistory, createRouter} from "vue-router";
 
 import home from './pages/Home.vue';
-import register from './pages/Register.vue';
-import login from './pages/Login.vue';
-import posts from './pages/Posts.vue';
+import signup from './pages/Signup.vue';
+import signin from './pages/Signin.vue';
 
-import publish from './components/Publish.vue';
-import profile from './pages/Profile.vue';
+import publications from './pages/Publications.vue';
+import posts from './pages/Posts.vue';
+import newpost from './pages/Newpost.vue';
+import postview from './pages/Postview.vue';
+
+import medium from './pages/Medium.vue';
 
 export const routes = [
     {
@@ -15,14 +18,19 @@ export const routes = [
         component: home
     },
     {
-        name: 'register',
-        path: '/register',
-        component: register
+        name: 'signup',
+        path: '/signup',
+        component: signup
     },
     {
-        name: 'login',
-        path: '/login',
-        component: login
+        name: 'signin',
+        path: '/signin',
+        component: signin
+    },
+    {
+        name: 'publications',
+        path: '/publications',
+        component: publications
     },
     {
         name: 'posts',
@@ -30,14 +38,19 @@ export const routes = [
         component: posts
     },
     {
-        name: 'publish',
-        path: '/publish',
-        component: publish
+        name: 'newpost',
+        path: '/posts/new',
+        component: newpost
     },
     {
-        name: 'profile',
-        path: '/profile',
-        component: profile
+        name: 'post',
+        path: '/post',
+        component: postview
+    },
+    {
+        name: 'medium',
+        path: '/medium',
+        component: medium
     },
 ];
 

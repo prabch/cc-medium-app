@@ -20,6 +20,7 @@
     "dependencies": {
         "materialize-css": "^1.0.0-rc.2",
         "vue": "^3.2.22",
-        "vue-router": "^4.0.12"
+        "vue-router": "^4.0.12",
+        "vue-toast-notification": "^2.0.1"
     }
 }

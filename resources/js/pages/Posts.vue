@@ -1,34 +1,33 @@
 <template>
-    <div>
-        <h2 class="text-left">Posts</h2>
+    <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                
-                <div class="alert alert-danger" v-if="Object.keys(errors).length">
-                    <ul>
-                        <li v-for="error in errors">{{ error[0] }}</li>
-                    </ul>
-                </div>
-
-                <div v-if="Object.keys(posts).length">
-
-
-                    <div v-for="{ id, name, description} in posts" :key="{id}">
-                        <div class="table-row__index">
-                          {{ id }}
-                        </div>
-                        <div class="table-row__title">
-                        <p> {{ name }}</p>
-                        </div>
-                        <div class="table-row__info">
-                            {{ description }}
-                        </div>
-                    </div>
-
-                </div>
-
+            <div class="col s12">
+               <h4>Posts
+               <router-link to="/posts/new" class="btn right"><i class="material-icons left">post_add</i>New Post</router-link>
+               </h4>
+               <div class="divider"></div>
             </div>
         </div>
+
+        <div class="row" v-if="Object.keys(posts).length">
+            <div class="col s12" v-for="{ id, title, excerpt, tags } in posts" :key="{id}">
+              <router-link :to="{name: 'post', params: { id: id }}">
+              <div class="card hoverable">
+                <div class="card-content">
+                  <span class="card-title">{{ title }}<span class="right">{{ id }}</span></span>
+                  <p>{{ excerpt }}</p>
+                </div>
+              </div>
+              </router-link>
+            </div>
+        </div>
+
+        <div class="row" v-else>
+            <div class="col s12">
+              <p><i class="material-icons left">info</i>No posts found !</p>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -36,8 +35,7 @@
     export default {
         data() {
             return {
-                posts: {},
-                errors: {}
+                posts: {}
             }
         },
         created() {
@@ -48,28 +46,15 @@
                         this.posts = response.data;
                     })
                     .catch(function (error) {
-                        that.errors = error.response.data.errors
+                        this.posts = {};
                     });
             })
         },
         methods: {
-            editProfile() {
-                var that = this;
-                this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                    this.$axios.post(`/api/profile/update`, this.profile)
-                        .then(response => {
-                            this.$router.push({name: 'profile'});
-                        })
-                        .catch(function (error) {
-                            that.errors = error.response.data.errors
-                        });
-                })
-            }
+
         },
         beforeRouteEnter(to, from, next) {
-            if (!window.general.isLoggedin) {
-                window.location.href = "/";
-            }
+            if (!window.General.LoggedIn) return next('signin');;
             next();
         }
     }

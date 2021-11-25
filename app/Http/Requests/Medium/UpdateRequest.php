@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Medium;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\Tokencheck;
@@ -23,7 +23,6 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:50'],
             'token' => ['required', 'string', 'max:255', new Tokencheck],
         ];
     }

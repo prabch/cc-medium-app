@@ -1,14 +1,18 @@
 require('./bootstrap');
 
-import 'materialize-css/dist/css/materialize.min.css'
-import {createApp} from 'vue'
+import 'materialize-css/dist/css/materialize.min.css';
+import {createApp} from 'vue';
 
-require('./bootstrap')
-import App from './App.vue'
-import axios from 'axios'
-import router from './router'
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
 
-const app = createApp(App)
+require('./bootstrap');
+import App from './App.vue';
+import axios from 'axios';
+import router from './router';
+
+const app = createApp(App);
 app.config.globalProperties.$axios = axios;
-app.use(router)
-app.mount('#app')
+app.use(router);
+app.use(VueToast);
+app.mount('#app');

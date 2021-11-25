@@ -1,6 +1,18 @@
 <template>
-    <div>
-        Homepage
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+               <h4>Home</h4>
+               <div class="divider"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <b>Lumen/ Laravel or OOP PHP coding challenge</b>
+                <p>Developed by Prabhashwara Chandrapadma (prab.ch@pm.me)</p>
+            </div>
+        </div>
     </div>
 </template>
 
